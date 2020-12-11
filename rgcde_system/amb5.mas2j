@@ -1,0 +1,14 @@
+MAS amb5 {
+
+	infrastructure: Centralised
+
+	environment: Ambiente5
+	
+	agents:
+		donaCasa;
+		gato1;
+		rato1;
+	
+	aslSourcePath:
+		"src/asl";
+}
