@@ -53,7 +53,7 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
        	for (int coluna = colunaDona; coluna <= (colunaDona + 3); coluna++) {
         	if ((coluna == ratoLoc.x) && (donaCasaLoc.y == ratoLoc.y)) {
         		ratoAchado = 1;
-        	    Literal ratoPercebido = Literal.parseLiteral("ratoPercebido(" + ratoLoc.x +"," + ratoLoc.y + ")");
+        	    Literal ratoPercebido = Literal.parseLiteral("chamargato(" + ratoLoc.x +"," + ratoLoc.y + ")");
         	    addPercept(ratoPercebido);
         	}
        		
@@ -206,7 +206,7 @@ class VisaoAmbiente extends GridWorldView {
         clearPercepts();
 
     	donaCasaLoc = modelo.getAgPos(0);
-        Literal pos1 = Literal.parseLiteral("pos(donaCasa," + donaCasaLoc.x + "," + donaCasaLoc.y + ")");
+        Literal pos1 = Literal.parseLiteral("perambularpeloambiente(donaCasa," + donaCasaLoc.x + "," + donaCasaLoc.y + ")");
         addPercept(pos1);        
                 
     }
