@@ -15,9 +15,10 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
 
 	public static final Term    pc = Literal.parseLiteral("proximaCasa");
 	public static final Term	pcg = Literal.parseLiteral("proximaCasaGato");
-    public static final int QUEIJO  = 16; // garbage code in grid model
+	public static final Term	pcr = Literal.parseLiteral("proximaCasaRato");
 
     private Location donaCasaLoc, gatoLoc, ratoLoc;
+    public int posQueijoX = -1, posQueijoY = -1;
 
     public static final int QUEIJO  = 16;
 
@@ -43,7 +44,7 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
         	}
        
        void proximaCasa() {
-    	   add(QUEIJO, 20, 20); 
+    	   add(QUEIJO, 25, 25); 
        	Location donaCasaLoc = getAgPos(0);
        	
        	add(QUEIJO,20,20);
@@ -117,7 +118,32 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
                Literal perseguicao = Literal.parseLiteral("aindaNaoPegou (" + gatoLoc.x + ", " + gatoLoc.y + ")");
        	       addPercept(perseguicao);
           	
-        }       
+        } 
+       void ProximaCasaRato() {
+    	   
+    	   ratoLoc = getAgPos(2);
+    	   remove(QUEIJO, ratoLoc.x, ratoLoc.y);
+    	   if (ratoLoc.x != posQueijoX) {
+    			if (ratoLoc.x < posQueijoX) {
+    				ratoLoc.x++;
+    			} else {
+    				ratoLoc.x--;
+    			} 
+    		} else if (ratoLoc.y != posQueijoY) {
+    			if (ratoLoc.y < posQueijoY) {
+    				ratoLoc.y++;
+    			} else {
+    				ratoLoc.y--;
+    			}
+    		}
+    	   setAgPos(2, ratoLoc);
+    	   Literal procurarQueijo = Literal.parseLiteral("quantidadeQueijo (" + ratoLoc.x + ", " + ratoLoc.y + ")");
+   	       addPercept(procurarQueijo);
+       }
+       
+       
+       
+       
     }
     
 class VisaoAmbiente extends GridWorldView {
@@ -139,7 +165,7 @@ class VisaoAmbiente extends GridWorldView {
 		switch (object) {
 	            
 			case Ambiente5.QUEIJO:
-				desenhaIncendio(g, x, y);
+				desenhaQueijo(g, x, y);
 				break;
 		}
 	}   
@@ -180,16 +206,6 @@ class VisaoAmbiente extends GridWorldView {
 
     }
     
-    
-    @Override
-	public void draw(Graphics g, int x, int y, int object) {
-		switch (object) {
-	            
-			case Ambiente5.QUEIJO:
-				desenhaQueijo(g, x, y);
-				break;
-		}
-	}
     
     public void desenhaQueijo(Graphics g, int x, int y) {
         
@@ -242,6 +258,12 @@ class VisaoAmbiente extends GridWorldView {
         	modelo.proximaCasaGato();
         	
         }
+        
+        if (action.equals(pcr)) {
+        	modelo.proximaCasaRato();
+        	
+        }
+       
         return true; 
     }
     
