@@ -5,6 +5,7 @@ import jason.environment.grid.GridWorldModel;
 import jason.environment.grid.GridWorldView;
 import jason.environment.grid.Location;
 
+import java.util.Random;
 import java.util.logging.*;
 
 import java.awt.Color;
@@ -18,7 +19,7 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
 	public static final Term	pcr = Literal.parseLiteral("proximaCasaRato");
 
     private Location donaCasaLoc, gatoLoc, ratoLoc;
-    public int posQueijoX = -1, posQueijoY = -1;
+    public int posQueijoX = 20, posQueijoY = 20;
 
     public static final int QUEIJO  = 16;
 
@@ -33,7 +34,7 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
 		            setAgPos(0, 0, 0);								// Posiciona o primeiro agente na posiï¿½ï¿½o 0,0
 		            setAgPos(1, 9, 9);
 		            setAgPos(2, 7, 1);
-		            
+		            addQueijos();
 		        	donaCasaLoc = getAgPos(0);
 		        	gatoLoc = getAgPos(1);
 		        	ratoLoc = getAgPos(2);
@@ -43,11 +44,23 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
                     }
         	}
        
+       void addQueijos() {
+    	   Random posQueijos = new Random();
+    	   for(int i = 0; i < 12; i++) {
+    		   int x = posQueijos.nextInt(29);
+    		   int y = posQueijos.nextInt(29);
+    		   posQueijoX = x;
+    		   posQueijoY = y;
+    		   add(QUEIJO, x, y);
+    		   
+    	   }
+       }
+       
        void proximaCasa() {
-    	   add(QUEIJO, 25, 25); 
+    	   
        	Location donaCasaLoc = getAgPos(0);
        	
-       	add(QUEIJO,20,20);
+      
        	            
        	
       	int colunaDona = donaCasaLoc.x;
@@ -119,11 +132,13 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
        	       addPercept(perseguicao);
           	
         } 
-       void ProximaCasaRato() {
+       void proximaCasaRato() {
     	   
-    	   ratoLoc = getAgPos(2);
-    	   remove(QUEIJO, ratoLoc.x, ratoLoc.y);
-    	   if (ratoLoc.x != posQueijoX) {
+    	   //ratoLoc = getAgPos(2);
+    	   //remove(QUEIJO, ratoLoc.x, ratoLoc.y);
+    	   
+    	   //ISSO AQUI É O MOVIMENTO PARA O CÃO QUANDO A DONA DE CASA O CHAMAR / CARTEIRO ACHAR DONA DE CASA
+    	   /*if (ratoLoc.x != posQueijoX) {
     			if (ratoLoc.x < posQueijoX) {
     				ratoLoc.x++;
     			} else {
@@ -135,15 +150,58 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
     			} else {
     				ratoLoc.y--;
     			}
+    		}*/
+    	   
+    	  
+    	   getAgPos(2, ratoLoc);
+    	   Random alea = new Random();
+    	 
+    	   
+    	   int linhatual = ratoLoc.x;
+    	   int colunatual = ratoLoc.y;
+    		
+    	   int direcao = alea.nextInt(4);
+    	   switch (direcao) {
+    	  
+    		case 0: {
+    			if (ratoLoc.x < 29) {
+    				ratoLoc.x ++;
+    			}
+    			else if (ratoLoc.y < 29) {
+    				ratoLoc.y ++;
+    			}
+    			break;
     		}
-    	   setAgPos(2, ratoLoc);
+    		case 1:	{
+    			if (ratoLoc.x > 0) {
+    				ratoLoc.x --;
+    			}
+    			break;
+    			}
+    		case 2: {
+    			if (ratoLoc.y < 29) {
+    				ratoLoc.y ++;
+    			}
+    			break;
+    		}
+    		case 3:	{
+    			if (ratoLoc.y > 0) {
+    				ratoLoc.y --;
+    			
+    			}
+    			break;
+    		}
+    		}
+    	   
+    	   if (hasObject(QUEIJO, ratoLoc)) {
+    			ratoLoc.x = linhatual;
+    			ratoLoc.y = colunatual;
+    		}
+
+    		setAgPos(2, ratoLoc);
     	   Literal procurarQueijo = Literal.parseLiteral("quantidadeQueijo (" + ratoLoc.x + ", " + ratoLoc.y + ")");
    	       addPercept(procurarQueijo);
-       }
-       
-       
-       
-       
+       }       
     }
     
 class VisaoAmbiente extends GridWorldView {
@@ -237,9 +295,14 @@ class VisaoAmbiente extends GridWorldView {
  
         clearPercepts();
 
+       
     	donaCasaLoc = modelo.getAgPos(0);
         Literal pos1 = Literal.parseLiteral("pos(donaCasa," + donaCasaLoc.x + "," + donaCasaLoc.y + ")");
-        addPercept(pos1);        
+        addPercept(pos1);
+        
+        ratoLoc = modelo.getAgPos(2);
+        Literal posRato = Literal.parseLiteral("quantidadeQueijo(" + ratoLoc.x + "," + ratoLoc.y + ")");
+        addPercept(posRato);    
                 
     }
 
