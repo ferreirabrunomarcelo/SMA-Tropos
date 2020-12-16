@@ -15,7 +15,8 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
 
 	public static final Term    pc = Literal.parseLiteral("proximaCasa");
 	public static final Term	pcg = Literal.parseLiteral("proximaCasaGato");
-	
+    public static final int QUEIJO  = 16; // garbage code in grid model
+
     private Location donaCasaLoc, gatoLoc, ratoLoc;
 
 
@@ -43,6 +44,8 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
        void proximaCasa() {
 
        	Location donaCasaLoc = getAgPos(0);
+       	
+       	add(QUEIJO,20,20);
        	            
       	int colunaDona = donaCasaLoc.x;
       	int ratoAchado = 0;
@@ -127,10 +130,23 @@ class VisaoAmbiente extends GridWorldView {
 		repaint();
 	  }
     
+    
+    @Override
+	public void draw(Graphics g, int x, int y, int object) {
+		switch (object) {
+	            
+			case Ambiente5.QUEIJO:
+				desenhaIncendio(g, x, y);
+				break;
+		}
+	}   
+    
     @Override
     public void drawAgent(Graphics g, int x, int y, Color c, int id) {
 		String rotulo = "";
 
+		
+		
 		switch (id) {
 		case 0: {
 			c = Color.green;
@@ -160,7 +176,19 @@ class VisaoAmbiente extends GridWorldView {
 		}
 
     }
+    
+    public void desenhaIncendio(Graphics g, int x, int y) {
+        
+    	
+    	super.drawObstacle(g, x, y);
+    	g.setColor(Color.yellow);
+            
+    	drawString(g, x, y, defaultFont, "FOGO!");
+    	
+        }
 }
+
+
 
 
  /* Chamado antes da execução da MAS como os argumentos informados em .mas2j */
@@ -188,6 +216,7 @@ class VisaoAmbiente extends GridWorldView {
        if (true) { 
              informAgsEnvironmentChanged();
         }
+        
         
         if (action.equals(pc)) {
         	modelo.proximaCasa();
