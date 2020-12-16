@@ -120,7 +120,7 @@ class VisaoAmbiente extends GridWorldView {
               
 		super(model, "Mundo CasaInfestada", 700);
              
-    	defaultFont = new Font("Arial", Font.BOLD, 12); // Muda a fonte padrão
+    	defaultFont = new Font("Arial", Font.BOLD, 8); // Muda a fonte padrão
             
    		setVisible(true);            
    		
@@ -134,7 +134,7 @@ class VisaoAmbiente extends GridWorldView {
 		switch (id) {
 		case 0: {
 			c = Color.green;
-			rotulo = new String ("DonaCasa");
+			rotulo = new String ("Dona");
 			break;
 		}
 		case 1: {
@@ -169,7 +169,7 @@ class VisaoAmbiente extends GridWorldView {
     public void init(String[] args) {
         super.init(args);
         
-        modelo = new ModeloAmbiente(10,10,3);
+        modelo = new ModeloAmbiente(30,30,3);
         
         visao  = new VisaoAmbiente(modelo);
                
