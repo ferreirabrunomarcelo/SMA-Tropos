@@ -19,16 +19,17 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
 
     private Location donaCasaLoc, gatoLoc, ratoLoc;
 
+    public static final int QUEIJO  = 16;
 
-	private ModeloAmbiente modelo;				// variável de modelo
-    private VisaoAmbiente  visao;				// variável de visão
+	private ModeloAmbiente modelo;				// variï¿½vel de modelo
+    private VisaoAmbiente  visao;				// variï¿½vel de visï¿½o
 
     class ModeloAmbiente extends GridWorldModel {		// Classe de modelo
 
        public ModeloAmbiente (int arg0, int arg1, int arg2) {	// Recebe a coluna, linha e agente
 	           super(arg0, arg1, arg2);
 	            try {
-		            setAgPos(0, 0, 0);								// Posiciona o primeiro agente na posição 0,0
+		            setAgPos(0, 0, 0);								// Posiciona o primeiro agente na posiï¿½ï¿½o 0,0
 		            setAgPos(1, 9, 9);
 		            setAgPos(2, 7, 1);
 		            
@@ -42,11 +43,12 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
         	}
        
        void proximaCasa() {
-
+    	   add(QUEIJO, 20, 20); 
        	Location donaCasaLoc = getAgPos(0);
        	
        	add(QUEIJO,20,20);
        	            
+       	
       	int colunaDona = donaCasaLoc.x;
       	int ratoAchado = 0;
        	
@@ -75,6 +77,7 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
             Literal pos1 = Literal.parseLiteral("pos(donaCasa," + donaCasaLoc.x + "," + donaCasaLoc.y + ")");
             addPercept(pos1);
        	}
+       	
        	
         }
        
@@ -123,7 +126,7 @@ class VisaoAmbiente extends GridWorldView {
               
 		super(model, "Mundo CasaInfestada", 700);
              
-    	defaultFont = new Font("Arial", Font.BOLD, 8); // Muda a fonte padrão
+    	defaultFont = new Font("Arial", Font.BOLD, 8); // Muda a fonte padrï¿½o
             
    		setVisible(true);            
    		
@@ -177,21 +180,34 @@ class VisaoAmbiente extends GridWorldView {
 
     }
     
-    public void desenhaIncendio(Graphics g, int x, int y) {
+    
+    @Override
+	public void draw(Graphics g, int x, int y, int object) {
+		switch (object) {
+	            
+			case Ambiente5.QUEIJO:
+				desenhaQueijo(g, x, y);
+				break;
+		}
+	}
+    
+    public void desenhaQueijo(Graphics g, int x, int y) {
         
     	
     	super.drawObstacle(g, x, y);
-    	g.setColor(Color.yellow);
+    	g.setColor(Color.red);
             
-    	drawString(g, x, y, defaultFont, "FOGO!");
+    	drawString(g, x, y, defaultFont, "QUEIJO");
     	
-        }
+     }
+    
+    
 }
 
 
 
 
- /* Chamado antes da execução da MAS como os argumentos informados em .mas2j */
+ /* Chamado antes da execuï¿½ï¿½o da MAS como os argumentos informados em .mas2j */
 
     @Override
     public void init(String[] args) {
@@ -224,17 +240,13 @@ class VisaoAmbiente extends GridWorldView {
         
         if (action.equals(pcg)) {
         	modelo.proximaCasaGato();
+        	
         }
         return true; 
     }
     
     
     
- /* Chamado antes do fim da execução do MAS */ 
-    @Override
-    public void stop() {
-        super.stop();
-    }
 
 
 }
