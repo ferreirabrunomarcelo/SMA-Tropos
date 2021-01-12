@@ -69,7 +69,7 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
        	for (int coluna = colunaDona; coluna <= (colunaDona + 3); coluna++) {
         	if ((coluna == ratoLoc.x) && (donaCasaLoc.y == ratoLoc.y)) {
         		ratoAchado = 1;
-        	    Literal ratoPercebido = Literal.parseLiteral("ratoPercebido(" + ratoLoc.x +"," + ratoLoc.y + ")");
+        	    Literal ratoPercebido = Literal.parseLiteral("chamargato(" + ratoLoc.x +"," + ratoLoc.y + ")");
         	    addPercept(ratoPercebido);
         	}
        		
@@ -153,7 +153,8 @@ public class Ambiente5 extends Environment {   // Classe de ambiente
     		}*/
     	   
     	  
-    	   getAgPos(2, ratoLoc);
+    	   //getAgPos(2, ratoLoc);
+    	  ratoLoc = getAgPos(2);
     	   Random alea = new Random();
     	 
     	   
@@ -297,12 +298,17 @@ class VisaoAmbiente extends GridWorldView {
 
        
     	donaCasaLoc = modelo.getAgPos(0);
-        Literal pos1 = Literal.parseLiteral("pos(donaCasa," + donaCasaLoc.x + "," + donaCasaLoc.y + ")");
-        addPercept(pos1);
+
+ //Literal pos1 = Literal.parseLiteral("pos(donaCasa," + donaCasaLoc.x + "," + donaCasaLoc.y + ")");
+// addPercept(pos1);
         
-        ratoLoc = modelo.getAgPos(2);
-        Literal posRato = Literal.parseLiteral("quantidadeQueijo(" + ratoLoc.x + "," + ratoLoc.y + ")");
-        addPercept(posRato);    
+ ratoLoc = modelo.getAgPos(2);
+ Literal posRato = Literal.parseLiteral("quantidadeQueijo(" + ratoLoc.x + "," + ratoLoc.y + ")");
+ addPercept(posRato);    
+
+ Literal pos1 = Literal.parseLiteral("perambularpeloambiente(donaCasa," + donaCasaLoc.x + "," + donaCasaLoc.y + ")");
+addPercept(pos1);        
+
                 
     }
 
