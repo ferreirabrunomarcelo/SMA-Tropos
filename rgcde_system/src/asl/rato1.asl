@@ -1,11 +1,6 @@
-// Agent rato1 in project amb5
-
-/* Initial beliefs and rules */
-
-/* Initial goals */
-
-!start.
-
-/* Plans */
-
-+!start : true <- .print("hello world.").
++quantidadeQueijo (X,Y) : true
+	<-	!procurarQueijo(X,Y).
+	
++!procurarQueijo(X,Y) : true
+	<-	.wait (200);
+		proximaCasaRato.	
